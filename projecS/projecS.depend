@@ -3,10 +3,21 @@
 	<stdio.h>
 	<stdlib.h>
 
-1726103374 source:c:\users\hp\desktop\novlesaspr\-projet-sas-\projecs\main.c
+1726144781 source:c:\users\hp\desktop\novlesaspr\-projet-sas-\projecs\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<stdbool.h>
 	<ctype.h>
+	"Hider.h"
+
+1726144780 c:\users\hp\desktop\novlesaspr\-projet-sas-\projecs\hider.h
+
+1726144781 source:c:\users\hp\desktop\novlesaspr\-projet-sas-\projecs\myfonction.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	<ctype.h>
+	"Hider.h"
 
