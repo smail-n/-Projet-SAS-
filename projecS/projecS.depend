@@ -3,3 +3,10 @@
 	<stdio.h>
 	<stdlib.h>
 
+1726103374 source:c:\users\hp\desktop\novlesaspr\-projet-sas-\projecs\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	<ctype.h>
+

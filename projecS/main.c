@@ -24,6 +24,7 @@ etudiant *TEtudiant = NULL;
 int NomberTotalEtudian = 0;
 
 
+
 int search_etudiant (char name[]){
     char what, Prenom [50];
     int i = 0;
@@ -40,23 +41,11 @@ int search_etudiant (char name[]){
         }
         i++;
      }
+     printf ("we cant finde\n");//
      return;
 }
 
- /*if (strcasecmp (node->Departement, nameORdepar) == 0){
-            printf ("we finde Departement %s \n", node->Departement);
-            return node;
-        }
-        node = node->Next;
 
-    printf ("we cant finde!\n");
-    return NULL;*/
-
-
-
-
-
-//-------------------------------------------------------------------------------------------------
 
 
 void Modifier_ou_supprimer (bool b){
@@ -141,9 +130,6 @@ void Modifier_ou_supprimer (bool b){
 
 
 
-
-
-//-------------------------------------------------------------------------------------------------
 void  Ajouter_de_nouveaux_etudiants (){
     int NewET, i, C;
 
@@ -266,15 +252,14 @@ int etudiants_dans_chaque_departement (){
         if (strcasecmp (TEtudiant [i].Departement, departement) == 0)
             total++;
     }
-
     return total;
 }
 
 void etudiants_ayant_une_moyenne_generale_superieure_a_un_certain_seuil (){
     int seuil, i;
 
-    printf ("enter un certain seuil : ");
-    scanf ("%d", &seuil);
+        printf ("enter un certain seuil : ");
+        scanf ("%d", &seuil);
 
     for (i = 0; i < NomberTotalEtudian; i++){
         if (TEtudiant [i].NoteGenerale >= seuil)
@@ -324,10 +309,123 @@ void Afficher_le_nombre_detudiants_ayant_Top_eussi_dans_chaque_departement (){
 
 }
 
+void changeTowElemant(int A, int B){
+    etudiant Te;
+
+                            // TEtudiant [i+1] ---> Te
+    strcpy (Te.Departement, TEtudiant[B].Departement);
+    Te.ID = TEtudiant [B].ID;
+    Te.Naissance.day = TEtudiant[B].Naissance.day;
+    Te.Naissance.month = TEtudiant [B].Naissance.month;
+    Te.Naissance.year = TEtudiant [B].Naissance.year;
+    strcpy (Te.nom, TEtudiant[B].nom);
+    Te.NoteGenerale =  TEtudiant [B].NoteGenerale;
+    strcpy (Te.prenom, TEtudiant [B].prenom);
+
+                            // TEtudiant [i] ----> TEtudiant [i+1]
+    strcpy (TEtudiant[B].Departement , TEtudiant[A].Departement);
+    TEtudiant [B].ID = TEtudiant [A].ID;
+    TEtudiant [B].Naissance.day = TEtudiant [A].Naissance.day;
+    TEtudiant [B].Naissance.month = TEtudiant [A].Naissance.month;
+    TEtudiant [B].Naissance.year = TEtudiant [A].Naissance.year;
+    strcpy (TEtudiant [B].nom , TEtudiant [A].nom);
+    TEtudiant [B].NoteGenerale =  TEtudiant [A].NoteGenerale;
+    strcpy (TEtudiant [B].prenom , TEtudiant [A].prenom);
+
+                            //Te ----> TEtudiant [i]
+    strcpy (TEtudiant[A].Departement , Te.Departement);
+    TEtudiant [A].ID = Te.ID;
+    TEtudiant [A].Naissance.day = Te.Naissance.day;
+    TEtudiant [A].Naissance.month = Te.Naissance.month;
+    TEtudiant [A].Naissance.year = Te.Naissance.year;
+    strcpy (TEtudiant [A].nom , Te.nom);
+    TEtudiant [A].NoteGenerale =  Te.NoteGenerale;
+    strcpy (TEtudiant [A].prenom , Te.prenom);
+
+}
+
+void Tri_alphabetique (){
+    int Long, i;
+
+
+    for (Long = 0; Long < NomberTotalEtudian-1; Long++){
+        for (i = Long; i >= 0; i--){
+            if (strcasecmp (TEtudiant [i].nom, TEtudiant [i+1].nom) == 1){
+                changeTowElemant(i, i+1);
+            }
+            else
+                continue;
+        }
+    }
+    printf ("--------Tri_alphabetique Good----------\n");
+
+
+}
+
+void Tri_par_du_plus (bool a){
+    int Long, i;
+
+    if (a){
+        for (Long = 0; Long < NomberTotalEtudian-1; Long++){
+            for (i = Long; i >= 0; i--){
+                if (TEtudiant [i].NoteGenerale < TEtudiant [i+1].NoteGenerale){
+                    changeTowElemant(i, i+1);
+                }
+                else
+                    continue;
+            }
+        }
+        printf ("--------plus eleve au plus faible ------------\n");
+    }
+    else{
+        for (Long = 0; Long < NomberTotalEtudian-1; Long++){
+            for (i = Long; i >= 0; i--){
+                if (TEtudiant [i].NoteGenerale > TEtudiant [i+1].NoteGenerale){
+                    changeTowElemant(i, i+1);
+                }
+                else
+                    continue;
+            }
+        }
+        printf ("--------plus faible au plus eleve ------------\n");
+    }
+}
+
+
+void Tri_des_etudiants_selon_leur_statut_de_reussite (){
+    int i, j;
+
+    for (i = NomberTotalEtudian-1; i >= 0; i--){
+         if (TEtudiant [i].NoteGenerale >= 10){
+            for (j = 0; j < i; j++){
+                if (TEtudiant [j].NoteGenerale < 10)
+                    changeTowElemant(i, j);
+                else{
+                    if (TEtudiant [j].NoteGenerale < TEtudiant [i].NoteGenerale){
+                        changeTowElemant(i, j);
+                    }
+                }
+            }
+        }
+    }
+
+    for (i = 0; i < NomberTotalEtudian; i++){
+        if (TEtudiant [i].NoteGenerale >= 10){
+            printf ("etudiant : %s %s\nNote generale : %.2f\n", TEtudiant [i].nom, TEtudiant [i].prenom, TEtudiant [i].NoteGenerale);
+        }
+         else
+            break;
+    }
+}
 
 int main(){
-    int again, chos, MoSu;
+    int again, chos, MoSu, i;
+    int Push;
     int deNumber;
+    char name [50];
+    char departement [50];
+
+
 
     Ajouter_de_nouveaux_etudiants ();
 
@@ -337,6 +435,9 @@ int main(){
         printf ("3. Modifier ou supprimer un etudiant\n");
         printf ("4. Calculer la moyenne générale \n");
         printf ("5. Statistiques \n");
+        printf ("6. Rechercher un etudiant par...\n");
+        printf ("7. Trier un étudiant par...\n");
+
         printf ("enter : ");
         scanf ("%d", &chos);
 
@@ -407,22 +508,99 @@ int main(){
                             Afficher_le_nombre_detudiants_ayant_Top_eussi_dans_chaque_departement ();
                             break;
                         default:
-                            printf ("switch 1 -> 2\n");
+                            printf ("switch 1 -> 5\n");
                             break;
                         }
                 break;
+                case 6:
+                    printf ("1. Rechercher un etudiant par son nom\n");
+                    printf ("2. Afficher la liste des etudiants inscrits dans un departement specifique\n");
+                    printf ("enter : ");
+                    scanf ("%d", &MoSu);
+                    switch (MoSu){
+                        case 1:
+                            printf ("enter nom d'un etudiant pour recherch : ");
+                            scanf ("%49s", name);
+                            Push = search_etudiant (name );
+                            if (Push != -1){
+                                printf ("-----------Etudiant %d-------\n\n", Push+1);
+                                printf ("\tnom : %s\n", TEtudiant[Push].nom);
+                                printf ("\tprenom :%s\n", TEtudiant[Push].prenom);
+                                printf ("\tID : %d\n", TEtudiant[Push].ID);
+                                printf ("\tDate de naissance %d/ %d/ %d\n", TEtudiant[Push].Naissance.day, TEtudiant[Push].Naissance.month, TEtudiant[Push].Naissance.year);
+                                printf ("\t Departement %s \n", TEtudiant[Push].Departement);
+                                printf ("\tNote generale %.2f\n", TEtudiant[Push].NoteGenerale);
+                            }
+                            break;
+                        case 2:
+                            printf ("enter departement : ");
+                            scanf ("%49s", departement);
+                            for (i = 0; i < NomberTotalEtudian; i++){
+                                if (strcasecmp (TEtudiant [i].Departement, departement) == 0){
+                                    printf ("-----------Etudiant departement %s -------\n\n", departement);
+                                    printf ("\tnom : %s\n", TEtudiant[i].nom);
+                                    printf ("\tprenom :%s\n", TEtudiant[i].prenom);
+                                    printf ("\tID : %d\n", TEtudiant[i].ID);
+                                    printf ("\tDate de naissance %d/ %d/ %d\n", TEtudiant[i].Naissance.day, TEtudiant[i].Naissance.month, TEtudiant[i].Naissance.year);
+                                    printf ("\t Departement %s \n", TEtudiant[i].Departement);
+                                    printf ("\tNote generale %.2f\n", TEtudiant[i].NoteGenerale);
+                                }
+                            }
+                         break;
+                        default:
+                            printf ("your choise isn't existe\n");
+                            break;
+                    }
+                    break;
+                    case 7:
+                        printf ("1. Tri alphabetique des etudiants en fonction de leur nom de A a Z\n");
+                        printf ("2. Tri des etudiants par moyenne generale, du plus eleve au plus faible ou inversement.\n");
+                        printf ("3. Tri des etudiants selon leur statut de reussite 10 -> 20.\n");
+                        printf ("enter : ");
+                        scanf ("%d", &MoSu);
 
-        default:
-            printf ("switch 1 -> 3\n");
-            break;
-        }
-        printf ("\n");
-        printf ("again   0: no, any number: yes \nenter : ");
-        scanf ("%d", &again);
-        printf ("\n\n\n");
-    }while (again);
+                        switch (MoSu){
+                        case 1:
+                            Tri_alphabetique ();
+                        break;
+                        case 2:
+                            printf ("1. Tri par du plus eleve au plus faible\n");
+                            printf ("2. Tri par du plus faible au plus eleve\n");
+                            printf ("enter : ");
+                            scanf ("%d", &MoSu);
+
+                            switch (MoSu){
+                            case 1:
+                                Tri_par_du_plus (true);
+                                break;
+                            case 2:
+                                Tri_par_du_plus (false);
+                                break;
+                            default :
+                                printf ("your chois isn't exist");
+                                break;
+                            }
+                        break;
+                        case 3:
+                            Tri_des_etudiants_selon_leur_statut_de_reussite ();
+                            break;
+                        default :
+                            printf ("your chois is fout");
+                        break;
+                    }
+                    break;
+                    default :
+                        printf ("cose 1 -> 7\n");
+                        break;
+            }
+                    printf ("\n");
+                    printf ("again   0: no, any number: yes \nenter : ");
+                    scanf ("%d", &again);
+                    printf ("\n\n\n");
+        }while (again);
 
 
     free(TEtudiant);
     return 0;
+
 }
