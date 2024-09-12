@@ -20,7 +20,7 @@ int main(){
     Ajouter_de_nouveaux_etudiants ();
 
     do{
-        printf ("  ------------ MENU ------------");
+        printf ("  ------------ MENU ------------\n");
         printf ("1. ajouter etudian\n");
         printf ("2. aficher\n");
         printf ("3. Modifier ou supprimer un etudiant\n");
