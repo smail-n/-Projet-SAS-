@@ -91,21 +91,21 @@ void Modifier_ou_supprimer (bool b){
         }
 
       else {
-            printf ("Voulez-vous choisir a nouveau ? Si vous ne voulez pas, choisissez 0 : ");
+            printf (" chose a name to delete it : ");
             scanf ("%49s", name1);
 
             j = search_etudiant (name1);
 
-            k = j+1;
+
             for (i = j; i < NomberTotalEtudian-1; i++){
-                strcpy (TEtudiant[i].nom, TEtudiant[k].nom);
-                strcpy (TEtudiant[i].Departement, TEtudiant[k].Departement);
-                strcpy (TEtudiant[i].prenom, TEtudiant[k].prenom);
-                TEtudiant[i].ID = TEtudiant[k].ID;
-                TEtudiant[i].Naissance.day = TEtudiant[k].Naissance.day;
-                TEtudiant[i].Naissance.month = TEtudiant[k].Naissance.month;
-                TEtudiant[i].Naissance.year = TEtudiant[k].Naissance.year;
-                k++;
+                strcpy (TEtudiant[i].nom, TEtudiant[j+1].nom);
+                strcpy (TEtudiant[i].Departement, TEtudiant[j+1].Departement);
+                strcpy (TEtudiant[i].prenom, TEtudiant[j+1].prenom);
+                TEtudiant[i].ID = TEtudiant[j+1].ID;
+                TEtudiant[i].Naissance.day = TEtudiant[j+1].Naissance.day;
+                TEtudiant[i].Naissance.month = TEtudiant[j+1].Naissance.month;
+                TEtudiant[i].Naissance.year = TEtudiant[j+1].Naissance.year;
+                TEtudiant[i].NoteGenerale = TEtudiant[j+1].NoteGenerale;
             }
             NomberTotalEtudian--;
       }
@@ -255,22 +255,29 @@ void etudiants_ayant_une_moyenne_generale_superieure_a_un_certain_seuil (){
 }
 
 void Afficher_les_etudiants_ayant_les_meilleures_notes (){
-    int i, j = 0;
-    int Top3i [2] = {-1, -1};
-    float Top;
+    int i, j = 0, k;
+    int Top3i [3] = {-1, -1, -1};
+    float Top = TEtudiant [0].NoteGenerale;
 
 
     do{
-        Top = TEtudiant [0].NoteGenerale;
+
         for (i = 0; i < NomberTotalEtudian; i++){
+            if (Top3i[0] != i && Top3i[1] != i && k ==0 ){
+                Top = TEtudiant [i].NoteGenerale;
+                k++;
+            }
+
             if (Top3i[0] == i || Top3i[1] == i)
                 continue;
-            if (TEtudiant [i].NoteGenerale > Top){
+
+            if (TEtudiant [i].NoteGenerale >= Top){
                 Top = TEtudiant [i].NoteGenerale;
                 Top3i[j] = i;
             }
         }
-        printf ("Top note %d is %.2f\n", j+1, Top);
+        printf ("Top note %d is %.2f\n", j+1, TEtudiant [Top3i[j]].NoteGenerale);
+        k = 0;
         j++;
     }while (j != 3);
 
